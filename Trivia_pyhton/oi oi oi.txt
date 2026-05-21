@@ -1,0 +1,1 @@
+Hola chiquillos aquí esta el código incluyendo Python para las preguntas y los puntos y cosas asi con librerías emm ummm toco dejar el js y cambiarle cosas al HTML aunque en cuanto a interfaz y todo funciona igual al anterior.

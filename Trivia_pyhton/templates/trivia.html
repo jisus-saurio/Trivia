@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trivia Party</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/trivia.css') }}">
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- Pantalla principal del juego -->
+<div class="game-screen" id="gameScreen">
+
+  <div class="main-card" id="mainCard">
+
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" onclick="window.goBack()" aria-label="Volver al inicio">&#8592;</button>
+      <h1 class="logo" aria-label="Trivia Party">
+        <span class="tl1">T</span><span class="tl2">r</span><span class="tl3">i</span><span class="tl4">v</span><span class="tl5">i</span><span class="tl6">a</span>
+        <span class="tl-space"> </span>
+        <span class="tl7">P</span><span class="tl8">a</span><span class="tl9">r</span><span class="tl10">t</span><span class="tl11">y</span>
+      </h1>
+      <div class="score-badge" id="scoreBadge">0/10</div>
+    </div>
+
+    <p class="question-counter" id="questionCounter">pregunta 1 de 10</p>
+
+    <!-- Timer -->
+    <div class="timer-card">
+      <span class="timer-label">tiempo</span>
+      <div class="timer-track">
+        <div class="timer-bar" id="timerBar"></div>
+      </div>
+      <span class="timer-secs" id="timerSecs">15s</span>
+    </div>
+
+    <!-- Pregunta -->
+    <div class="question-card">
+      <p class="question-text" id="questionText">Cargando pregunta...</p>
+    </div>
+
+    <!-- Respuestas -->
+    <div class="answers-grid" id="answersGrid">
+      <button class="answer-btn" id="btnA" onclick="window.selectAnswer(0)">
+        <span class="opt">A)</span> <span id="ansA"></span>
+      </button>
+      <button class="answer-btn" id="btnB" onclick="window.selectAnswer(1)">
+        <span class="opt">B)</span> <span id="ansB"></span>
+      </button>
+      <button class="answer-btn" id="btnC" onclick="window.selectAnswer(2)">
+        <span class="opt">C)</span> <span id="ansC"></span>
+      </button>
+      <button class="answer-btn" id="btnD" onclick="window.selectAnswer(3)">
+        <span class="opt">D)</span> <span id="ansD"></span>
+      </button>
+    </div>
+
+  </div><!-- /main-card -->
+</div><!-- /game-screen -->
+
+<!-- Pantalla final (oculta inicialmente) -->
+<div class="final-screen" id="finalScreen" style="display:none;">
+  <div class="final-wrapper">
+    <div class="final-left">
+      <img src="{{ url_for('static', filename='imagenes/entusiasta.png') }}"
+           alt="nutria entusiasta"
+           id="finalOtter" />
+      <p class="final-slogan" id="finalSlogan"></p>
+      <p class="final-sub" id="finalSub"></p>
+    </div>
+    <div class="final-right">
+      <p class="final-title">PUNTAJE FINAL</p>
+      <p class="final-score" id="finalScore"></p>
+      <div class="final-progress-track">
+        <div class="final-progress-bar" id="finalBar" style="width:0%"></div>
+      </div>
+      <div class="final-stats">
+        <div class="stat-card">
+          <span class="stat-icon">⏱️</span>
+          <span class="stat-label">Tiempo Promedio</span>
+          <span class="stat-value" id="finalAvg"></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🏆</span>
+          <span class="stat-label">Tiempo Récord</span>
+          <span class="stat-value" id="finalBest"></span>
+        </div>
+      </div>
+      <div class="final-btns">
+        <button class="btn-replay" onclick="window.location.href='{{ url_for('reiniciar') }}'">
+          volver a jugar ↺
+        </button>
+        <button class="btn-home" onclick="window.location.href='{{ url_for('inicio') }}'">
+          inicio
+        </button>
+      </div>
+    </div>
+  </div>
+</div><!-- /final-screen -->
+
+<!-- Feedback overlay -->
+<div class="overlay" id="overlay">
+  <div class="feedback-card" id="feedbackCard">
+    <div class="fb-top-right">
+      <span class="fb-score" id="fbScore"></span>
+      <button class="close-btn" onclick="window.nextQuestion()" aria-label="Siguiente pregunta">✕</button>
+    </div>
+    <img src="{{ url_for('static', filename='imagenes/inicio.png') }}"
+         alt="nutria"
+         class="fb-otter"
+         id="fbOtter" />
+    <h2 class="fb-result" id="fbResult"></h2>
+    <p class="fb-answer" id="fbAnswer"></p>
+    <button class="next-btn" onclick="window.nextQuestion()">
+      siguiente pregunta
+      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
+        <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+        <polygon points="10,8 16,12 10,16"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- URLs de imágenes accesibles para JS -->
+<script>
+  window.IMG_FELIZ    = "{{ url_for('static', filename='imagenes/feliz.png') }}";
+  window.IMG_TRISTE   = "{{ url_for('static', filename='imagenes/triste.png') }}";
+  window.IMG_INICIO   = "{{ url_for('static', filename='imagenes/inicio.png') }}";
+</script>
+<script src="{{ url_for('static', filename='js/trivia.js') }}"></script>
+</body>
+</html>
