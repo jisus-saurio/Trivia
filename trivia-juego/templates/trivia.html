@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trivia Party</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/trivia.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<div class="game-screen" id="gameScreen">
+
+  <!-- Card principal que envuelve todo el juego -->
+  <div class="main-card">
+
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" onclick="goBack()">&#8592;</button>
+      <h1 class="logo" aria-label="Trivia Party">
+        <span class="tl1">T</span><span class="tl2">r</span><span class="tl3">i</span><span class="tl4">v</span><span class="tl5">i</span><span class="tl6">a</span>
+        <span class="tl-space"></span>
+        <span class="tl7">P</span><span class="tl8">a</span><span class="tl9">r</span><span class="tl10">t</span><span class="tl11">y</span>
+      </h1>
+      <div class="score-badge" id="scoreBadge">0/10</div>
+    </div>
+
+    <p class="question-counter" id="questionCounter">pregunta 1 de 10</p>
+
+    <!-- Timer card (pill con barra adentro) -->
+    <div class="timer-card">
+      <span class="timer-label">tiempo</span>
+      <div class="timer-track">
+        <div class="timer-bar" id="timerBar"></div>
+      </div>
+      <span class="timer-secs" id="timerSecs">15s</span>
+    </div>
+
+    <!-- Question card -->
+    <div class="question-card">
+      <p class="question-text" id="questionText">Cargando pregunta...</p>
+    </div>
+
+    <!-- Answer buttons -->
+    <div class="answers-grid" id="answersGrid">
+      <button class="answer-btn" id="btnA" onclick="selectAnswer(0)"><span class="opt">A)</span> <span id="ansA"></span></button>
+      <button class="answer-btn" id="btnB" onclick="selectAnswer(1)"><span class="opt">B)</span> <span id="ansB"></span></button>
+      <button class="answer-btn" id="btnC" onclick="selectAnswer(2)"><span class="opt">C)</span> <span id="ansC"></span></button>
+      <button class="answer-btn" id="btnD" onclick="selectAnswer(3)"><span class="opt">D)</span> <span id="ansD"></span></button>
+    </div>
+
+  </div><!-- /main-card -->
+</div>
+
+<!-- Feedback overlay -->
+<div class="overlay" id="overlay">
+  <div class="feedback-card" id="feedbackCard">
+    <div class="fb-top-right">
+      <span id="fbScore" class="fb-score"></span>
+      <button class="close-btn" onclick="nextQuestion()">✕</button>
+    </div>
+    <img src="{{ url_for('static', filename='imagenes/inicio.png') }}" alt="nutria" class="fb-otter" id="fbOtter"
+         data-happy="{{ url_for('static', filename='imagenes/feliz.png') }}"
+         data-sad="{{ url_for('static', filename='imagenes/triste.png') }}" />
+    <h2 class="fb-result" id="fbResult"></h2>
+    <p class="fb-answer" id="fbAnswer"></p>
+    <button class="next-btn" onclick="nextQuestion()">
+      siguiente pregunta
+      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+        <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+        <polygon points="10,8 16,12 10,16"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- URL de imagen final pasada desde Flask al JS -->
+<script>
+  const STATIC_ENTUSIASTA = "{{ url_for('static', filename='imagenes/entusiasta.png') }}";
+  const STATIC_INICIO     = "{{ url_for('static', filename='inicio') }}";
+</script>
+<script src="{{ url_for('static', filename='js/trivia.js') }}"></script>
+</body>
+</html>

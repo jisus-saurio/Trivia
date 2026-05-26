@@ -1,6 +1,6 @@
 import os
 import secrets
-from flask import Flask, render_template, jsonify, session, request, redirect, url_for
+from flask import Flask, render_template, jsonify, session, request, redirect, url_for  
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
