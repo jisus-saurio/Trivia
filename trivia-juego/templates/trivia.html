@@ -10,15 +10,16 @@
 </head>
 <body>
 
+<!-- Canvas de fondo y pantalla principal del juego -->
 <canvas id="bgCanvas"></canvas>
 
 <div class="game-screen" id="gameScreen">
 
-  <!-- Card principal que envuelve todo el juego -->
+
   <div class="main-card">
 
-    <!-- Header -->
     <div class="header">
+      <!-- Encabezado con botón de regreso y marcador de puntaje -->
       <button class="back-btn" onclick="goBack()">&#8592;</button>
       <h1 class="logo" aria-label="Trivia Party">
         <span class="tl1">T</span><span class="tl2">r</span><span class="tl3">i</span><span class="tl4">v</span><span class="tl5">i</span><span class="tl6">a</span>
@@ -30,8 +31,9 @@
 
     <p class="question-counter" id="questionCounter">pregunta 1 de 10</p>
 
-    <!-- Timer card (pill con barra adentro) -->
+
     <div class="timer-card">
+      <!-- Temporizador visible durante cada pregunta -->
       <span class="timer-label">tiempo</span>
       <div class="timer-track">
         <div class="timer-bar" id="timerBar"></div>
@@ -39,24 +41,27 @@
       <span class="timer-secs" id="timerSecs">15s</span>
     </div>
 
-    <!-- Question card -->
+  
     <div class="question-card">
+      <!-- Muestra el texto de la pregunta actual -->
       <p class="question-text" id="questionText">Cargando pregunta...</p>
     </div>
 
-    <!-- Answer buttons -->
+  
     <div class="answers-grid" id="answersGrid">
+      <!-- Botones de respuesta para cada opción -->
       <button class="answer-btn" id="btnA" onclick="selectAnswer(0)"><span class="opt">A)</span> <span id="ansA"></span></button>
       <button class="answer-btn" id="btnB" onclick="selectAnswer(1)"><span class="opt">B)</span> <span id="ansB"></span></button>
       <button class="answer-btn" id="btnC" onclick="selectAnswer(2)"><span class="opt">C)</span> <span id="ansC"></span></button>
       <button class="answer-btn" id="btnD" onclick="selectAnswer(3)"><span class="opt">D)</span> <span id="ansD"></span></button>
     </div>
 
-  </div><!-- /main-card -->
+  </div>
 </div>
 
-<!-- Feedback overlay -->
+
 <div class="overlay" id="overlay">
+  <!-- Tarjeta de retroalimentación después de cada respuesta -->
   <div class="feedback-card" id="feedbackCard">
     <div class="fb-top-right">
       <span id="fbScore" class="fb-score"></span>
@@ -77,7 +82,7 @@
   </div>
 </div>
 
-<!-- URL de imagen final pasada desde Flask al JS -->
+
 <script>
   const STATIC_ENTUSIASTA = "{{ url_for('static', filename='imagenes/entusiasta.png') }}";
   const STATIC_INICIO     = "{{ url_for('static', filename='inicio') }}";

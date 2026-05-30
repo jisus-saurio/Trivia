@@ -1,9 +1,7 @@
-/* ============================================================
-   inicio.js — Trivia Party · Nubes con imagen real
-   ============================================================ */
 (function () {
   "use strict";
 
+  // Animación de fondo y botón de inicio en la pantalla principal.
   const canvas = document.getElementById("bgCanvas");
   const ctx    = canvas.getContext("2d");
   let W, H;
@@ -14,7 +12,7 @@
   window.addEventListener("resize", resize);
   resize();
 
-  /* ── FONDO ── */
+  // Dibuja el degradado de fondo del inicio.
   function drawBackground() {
     const grad = ctx.createLinearGradient(0, 0, 0, H);
     grad.addColorStop(0, "#F2C49B");
@@ -23,19 +21,19 @@
     ctx.fillRect(0, 0, W, H);
   }
 
-  /* ── IMAGEN DE NUBE ── */
+ 
+  // Imagen de nube usada para el efecto de fondo.
   const cloudImg = new Image();
   cloudImg.src = "imagenes/nube.png";
 
-  /* ── CONFIGURACIÓN DE NUBES ──
-     Variedad: tamaños, opacidades y velocidades distintas */
+
   function makeCloud(randomX) {
-    const w     = 80  + Math.random() * 220;   /* ancho: 80px – 300px      */
+    const w     = 80  + Math.random() * 220;   
     const speed = 0.12 + Math.random() * 0.30;
     const y     = Math.random() * (H * 0.85);
     const alpha = Math.random() < 0.5
-      ? 0.85 + Math.random() * 0.15            /* nube sólida              */
-      : 0.20 + Math.random() * 0.30;           /* nube tenue               */
+      ? 0.85 + Math.random() * 0.15           
+      : 0.20 + Math.random() * 0.30;          
     const layer = w > 180 ? "front" : "back";
     const x     = randomX
       ? Math.random() * (W + w) - w
@@ -63,7 +61,7 @@
     c.layer = w > 180 ? "front" : "back";
   }
 
-  /* ── DIBUJAR NUBE ── */
+
   function drawCloud(c) {
     if (!cloudImg.complete || cloudImg.naturalWidth === 0) return;
     const ratio = cloudImg.naturalHeight / cloudImg.naturalWidth;
@@ -74,21 +72,22 @@
     ctx.restore();
   }
 
-  /* ── LOOP ── */
+  
   cloudImg.onload = initClouds;
-  initClouds(); /* también llamar por si ya estaba en caché */
+  initClouds();
 
+  // Loop principal que anima las nubes y el fondo.
   function tick() {
     drawBackground();
 
-    /* Back: pequeñas, lentas */
+   
     clouds.filter(c => c.layer === "back").forEach(c => {
       drawCloud(c);
       c.x += c.speed * 0.45;
       if (c.x > W + 10) respawn(c);
     });
 
-    /* Front: grandes, más rápidas */
+   
     clouds.filter(c => c.layer === "front").forEach(c => {
       drawCloud(c);
       c.x += c.speed;
@@ -99,8 +98,8 @@
   }
   tick();
 
-  /* ── BOTÓN ── */
+  
   const playBtn = document.getElementById("playBtn");
-  if (playBtn) playBtn.addEventListener("click", () => { window.location.href = "/trivia"; });
+  if (playBtn) playBtn.addEventListener("click", () => { window.location.href = "/registro"; });
 
 })();

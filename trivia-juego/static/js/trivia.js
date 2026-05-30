@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  // Lógica principal del juego de trivia, con preguntas, temporizador y respuesta.
   const TIMER_SECS = 15;
 
   let answered      = false;
@@ -9,7 +10,7 @@
   let startTs       = 0;
   let currentData   = null; 
 
-  /* ---- DOM refs ---- */
+  // Referencias a los elementos de la página usados por el juego.
   const counterEl    = document.getElementById("questionCounter");
   const scoreBadge   = document.getElementById("scoreBadge");
   const timerBar     = document.getElementById("timerBar");
@@ -35,10 +36,7 @@
     document.getElementById("ansD")
   ];
 
-  /* ======================================================
-     API CALLS
-  ====================================================== */
-
+  // Pide al servidor la pregunta actual en formato JSON.
   async function fetchPregunta() {
     const res  = await fetch("/api/pregunta");
     const data = await res.json();
@@ -64,10 +62,7 @@
     return res.json();
   }
 
-  /* ======================================================
-     LOAD QUESTION
-  ====================================================== */
-
+  // Carga la pregunta actual y actualiza la interfaz con sus opciones.
   async function loadQuestion() {
     answered      = false;
     currentData   = await fetchPregunta();
@@ -88,10 +83,7 @@
     startTs = Date.now();
   }
 
-  /* ======================================================
-     TIMER
-  ====================================================== */
-
+  // Inicia el temporizador visual y de juego para cada pregunta.
   function startTimer() {
     clearInterval(timerInterval);
     timeLeft = TIMER_SECS;
@@ -123,10 +115,7 @@
     showFeedback(result);
   }
 
-  /* ======================================================
-     SELECT ANSWER
-  ====================================================== */
-
+  // Procesa la selección de una respuesta y bloquea más interacciones.
   window.selectAnswer = async function (idx) {
     if (answered) return;
     answered = true;
@@ -144,6 +133,7 @@
   };
 
 
+  // Muestra el resultado rápido después de cada respuesta.
   function showFeedback(result) {
     fbResult.textContent = result.result_text;
     fbAnswer.textContent = `la respuesta es: ${result.correct_text}`;
@@ -175,11 +165,37 @@
     }
   };
 
-  function fmtTime(str) { return str; } // ya viene formateado desde Python
+  // Recupera el historial de estadísticas locales.
+  function getStoredStats() {
+    const raw = localStorage.getItem("trivia_stats");
+    if (!raw) return { games: 0, correct: 0, totalTime: 0, bestTime: null, lastName: null, lastPlayed: null };
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return { games: 0, correct: 0, totalTime: 0, bestTime: null, lastName: null, lastPlayed: null };
+    }
+  }
 
+  // Actualiza las estadísticas locales al finalizar una partida.
+  function saveStoredStats({ score, total_time_secs, best_time_secs }) {
+    const stats = getStoredStats();
+    stats.games += 1;
+    stats.correct += score;
+    stats.totalTime += total_time_secs;
+    stats.bestTime = stats.bestTime === null ? best_time_secs : Math.min(stats.bestTime, best_time_secs);
+    stats.lastName = localStorage.getItem("trivia_player_name") || "Jugador";
+    stats.lastPlayed = new Date().toISOString();
+    localStorage.setItem("trivia_stats", JSON.stringify(stats));
+  }
+
+  function fmtTime(str) { return str; }
+
+  // Muestra la pantalla final con el puntaje y guarda estadísticas locales.
   async function showFinal() {
     const data = await fetchFinal();
-    const { score, total, pct, avg_time, best_time, slogan, sub } = data;
+    const { score, total, pct, avg_time, best_time, total_time_secs, best_time_secs, slogan, sub } = data;
+    const playerName = localStorage.getItem("trivia_player_name") || "Amigo";
+    saveStoredStats({ score, total_time_secs, best_time_secs });
 
     document.getElementById("gameScreen").outerHTML = `
       <div class="final-screen" id="finalScreen">
@@ -190,23 +206,22 @@
             <p class="final-sub">${sub}</p>
           </div>
           <div class="final-right">
-            <p class="final-title">PUNTAJE FINAL</p>
+            <p class="final-title">¡${playerName}, juegas increíble!</p>
             <p class="final-score">${score}/${total}</p>
             <div class="final-progress-track">
               <div class="final-progress-bar" id="finalBar" style="width:0%"></div>
             </div>
             <div class="final-stats">
               <div class="stat-card">
-                <span class="stat-icon">⏱️</span>
                 <span class="stat-label">Tiempo Promedio</span>
                 <span class="stat-value">${avg_time}</span>
               </div>
               <div class="stat-card">
-                <span class="stat-icon">🏆</span>
                 <span class="stat-label">Tiempo Récord</span>
                 <span class="stat-value">${best_time}</span>
               </div>
             </div>
+            <p class="final-note">Tu resultado se guardó localmente para tus próximos juegos.</p>
             <div class="final-btns">
               <button class="btn-replay" onclick="location.href='/reiniciar'">volver a jugar ↺</button>
               <button class="btn-home"   onclick="location.href='/inicio'">inicio</button>
@@ -229,6 +244,7 @@
 
 
 
+  // Fondo animado de la pantalla de trivia.
   const canvas = document.getElementById("bgCanvas");
   const ctx    = canvas.getContext("2d");
   let W, H;
@@ -245,6 +261,7 @@
   const SHAPES      = ["circle", "ring", "diamond", "cross", "triangle", "dot"];
   const shapes      = [];
 
+  // Genera formas decorativas para el fondo animado.
   function randomShape() {
     return {
       type:     SHAPES[Math.floor(Math.random() * SHAPES.length)],
@@ -321,7 +338,6 @@
   }
   tick();
 
-  /* ---- Start ---- */
   loadQuestion();
 
 })();

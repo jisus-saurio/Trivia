@@ -1,3 +1,5 @@
+# Configuración inicial de la aplicación Flask.
+# Se usa la sesión para mantener el estado del juego por usuario.
 import os
 import secrets
 from flask import Flask, render_template, jsonify, session, request, redirect, url_for  
@@ -62,6 +64,7 @@ QUESTIONS = [
 TOTAL = len(QUESTIONS)
 TIMER_SECS = 15
 
+# Constantes globales usadas por la trivia.
 
 def init_session():
     """Inicializa la sesión de juego si no existe."""
@@ -74,10 +77,12 @@ def init_session():
             "finished": False,
             "answered": False,
         }
+        # Marca sesión como modificada para que Flask la guarde.
         session.modified = True
 
 
 # ─── Rutas de páginas ──────────────────────────────────────────────────────────
+# Rutas que devuelven las páginas HTML visibles por el usuario.
 
 @app.route("/")
 def index():
@@ -89,20 +94,23 @@ def inicio():
     return render_template("inicio.html")
 
 
+@app.route("/registro")
+def registro():
+    return render_template("registro.html")
+
+
 @app.route("/trivia")
 def trivia():
     init_session()
     return render_template("trivia.html")
 
-
+# Ruta para reiniciar el juego y comenzar una nueva partida.
 @app.route("/reiniciar")
 def reiniciar():
     session.pop("game", None)
     return redirect(url_for("trivia"))
 
-
-# ─── API REST ──────────────────────────────────────────────────────────────────
-
+# Endpoints JSON para la lógica del juego: pregunta, respuesta, siguiente y resultados.
 @app.route("/api/pregunta")
 def api_pregunta():
     """Devuelve la pregunta actual (sin revelar la correcta)."""
@@ -132,6 +140,7 @@ def api_pregunta():
 def api_responder():
     """Valida la respuesta enviada por el jugador."""
     init_session()
+    # Recibe respuesta y tiempo, marca acierto o fallo.
     g = session["game"]
 
     if g["finished"]:
@@ -158,7 +167,7 @@ def api_responder():
 
     is_correct = (not time_out) and (idx_seleccionado == correct_idx)
 
-    # Actualizar sesión
+
     if is_correct:
         g["score"] += 1
 
@@ -188,6 +197,7 @@ def api_responder():
 def api_siguiente():
     """Avanza a la siguiente pregunta."""
     init_session()
+    # Cambia el índice actual y prepara la siguiente pregunta.
     g = session["game"]
 
     if g["finished"]:
@@ -209,6 +219,7 @@ def api_siguiente():
 def api_final():
     """Devuelve los resultados finales."""
     init_session()
+    # Calcula porcentaje, promedio y tiempos para el resultado.
     g = session["game"]
 
     score = g["score"]
@@ -238,12 +249,11 @@ def api_final():
         "pct": pct,
         "avg_time": fmt_time(avg_secs),
         "best_time": fmt_time(best_time),
+        "total_time_secs": total_time,
+        "best_time_secs": best_time,
         "slogan": slogan,
         "sub": sub,
     })
-
-
-# ─── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     app.run(debug=True)

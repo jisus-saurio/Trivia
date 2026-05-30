@@ -1,21 +1,20 @@
-/* ===== FUENTES ===== */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap');
 
-/* ===== RESET & BASE ===== */
+/* Estilos de la pantalla de inicio con botón y fondo animado. */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Layout base para la pantalla home. */
 
 html, body {
   width: 100%; height: 100%; overflow: hidden;
   font-family: 'Nunito', 'Segoe UI', sans-serif;
 }
 
-/* ===== CANVAS ===== */
 #bgCanvas {
   position: fixed; inset: 0;
   width: 100%; height: 100%; z-index: 0;
 }
 
-/* ===== SCREEN ===== */
 .screen {
   position: relative; z-index: 1;
   width: 100%; height: 100vh;
@@ -24,7 +23,6 @@ html, body {
   gap: 0;
 }
 
-/* ===== TÍTULO ===== */
 .title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(6.8rem, 7vw, 5rem);
@@ -35,7 +33,6 @@ html, body {
   filter: drop-shadow(0 5px 12px rgba(100,60,20,0.35));
 }
 
-/* Letras crema cálido como imagen de referencia */
 .title .l1  { color: #FFF5E4; }
 .title .l2  { color: #FFF0D8; }
 .title .l3  { color: #FFF5E4; }
@@ -49,7 +46,6 @@ html, body {
 .title .l11 { color: #FFF5E4; }
 .title .space { width: clamp(12px, 2.5vw, 26px); }
 
-/* Onda suave en las letras */
 .title .l2  { transform: translateY(-5px);  }
 .title .l4  { transform: translateY(-8px);  }
 .title .l6  { transform: translateY(-3px);  }
@@ -69,7 +65,6 @@ html, body {
   to   { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-/* ===== OTTER ===== */
 .otter-wrapper {
   display: flex; justify-content: center;
   animation: otterFloat 5.2s ease-in-out infinite;
@@ -88,7 +83,6 @@ html, body {
   50%       { transform: translateY(-14px) rotate(0.5deg); }
 }
 
-/* ===== PLAY BUTTON ===== */
 .play-btn {
   margin-top: 28px;
   display: flex; align-items: center; gap: 14px;
@@ -111,7 +105,7 @@ html, body {
   box-shadow: 0 12px 0 #3d2008, 0 20px 36px rgba(80,35,0,0.36);
   filter: brightness(1.08);
 }
-/* Sin efecto de bajar al hacer click */
+
 .play-btn:active {
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 9px 0 #3d2008, 0 14px 24px rgba(80,35,0,0.30);

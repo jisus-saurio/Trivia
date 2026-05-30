@@ -1,17 +1,17 @@
-/* ===== RESET ===== */
+/* Estilos de la pantalla de juego principal y componentes interactivos. */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Estructura del tablero, tarjetas y animaciones de la trivia. */
 
 html, body {
   width: 100%; height: 100%; overflow: hidden;
   font-family: 'Georgia', serif;
 }
 
-/* ===== CANVAS ===== */
 #bgCanvas {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
 }
 
-/* ===== GAME SCREEN — centra la card en pantalla ===== */
 .game-screen {
   position: relative; z-index: 1;
   width: 100%; height: 100vh;
@@ -19,7 +19,6 @@ html, body {
   padding: 16px;
 }
 
-/* ===== MAIN CARD — contenedor blanco que agrupa todo ===== */
 .main-card {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
@@ -35,7 +34,6 @@ html, body {
     0 1px 8px rgba(0,0,0,0.05);
 }
 
-/* ===== HEADER ===== */
 .header {
   display: flex; align-items: center; justify-content: space-between;
 }
@@ -76,14 +74,12 @@ html, body {
   letter-spacing: 1px; font-family: 'Georgia', serif;
 }
 
-/* ===== COUNTER ===== */
 .question-counter {
   text-align: center; font-size: 1rem;
   color: #3b2009; letter-spacing: 0.5px;
   margin-top: -8px;
 }
 
-/* ===== TIMER CARD — cajita pill con la barra adentro ===== */
 .timer-card {
   background: rgba(255,255,255,0.90);
   border-radius: 50px;
@@ -116,7 +112,6 @@ html, body {
   min-width: 36px; text-align: right; font-family: 'Georgia', serif;
 }
 
-/* ===== QUESTION CARD — sage green ===== */
 .question-card {
   background: #8fac89;
   border-radius: 22px;
@@ -132,7 +127,6 @@ html, body {
   text-shadow: 0 1px 3px rgba(0,0,0,0.18);
 }
 
-/* ===== ANSWERS GRID ===== */
 .answers-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -171,7 +165,6 @@ html, body {
 .answer-btn:disabled { cursor: default; }
 .opt { opacity: 0.65; font-size: 0.9em; }
 
-/* ===== OVERLAY ===== */
 .overlay {
   display: none;
   position: fixed; inset: 0; z-index: 10;
@@ -181,7 +174,6 @@ html, body {
 }
 .overlay.show { display: flex; }
 
-/* ===== FEEDBACK CARD ===== */
 .feedback-card {
   background: linear-gradient(160deg, #f0e8d8 0%, #e4d4b4 100%);
   border-radius: 28px;
@@ -238,7 +230,6 @@ html, body {
 .next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #3b1e08; }
 .next-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #3b1e08; }
 
-/* ===== FINAL SCREEN ===== */
 .final-screen {
   position: relative; z-index: 1;
   width: 100%; height: 100vh;
@@ -324,7 +315,6 @@ html, body {
 }
 .btn-home:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #0d0601; }
 
-/* ===== RESPONSIVE MOBILE ===== */
 @media (max-width: 520px) {
   .main-card { padding: 18px 16px 22px; gap: 11px; border-radius: 22px; }
   .logo { font-size: 1.85rem; }

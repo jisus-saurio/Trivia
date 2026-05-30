@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro Trivia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
+</head>
+<body>
+  <!-- Fondo animado y tarjeta de ingreso de nombre -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="register-screen">
+    <div class="register-card">
+      <div class="register-header">
+        <div>
+          <p class="eyebrow">¡Bienvenido a Trivia Party!</p>
+          <h1>Escribe tu nombre para empezar</h1>
+        </div>
+        <a class="back-link" href="/inicio">← Volver</a>
+      </div>
+
+      <p class="register-intro">Tu nombre se usará para personalizar tu experiencia y guardar tus aciertos y tiempos en este navegador.</p>
+
+      <!-- Formulario para capturar el nombre del jugador -->
+      <form id="nameForm" class="name-form">
+        <label for="playerName">Nombre</label>
+        <input id="playerName" name="playerName" type="text" placeholder="ej. Valentina" maxlength="18" autocomplete="off" required>
+        <button type="submit" class="start-btn">Iniciar trivia</button>
+      </form>
+
+      <!-- Panel con estadísticas guardadas en el navegador -->
+      <div class="stats-panel" id="statsPanel">
+        <p class="stats-empty">Cargando tus estadísticas...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+</body>
+</html>
